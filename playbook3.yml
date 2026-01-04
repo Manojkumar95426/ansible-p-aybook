@@ -1,0 +1,11 @@
+---
+- name: Clone a remote repo from github
+  hosts: all
+  tasks: 
+    - name: Download a repo
+      git: 
+        repo: https://github.com/Manojkumar95426/new-maven.git
+        dest: /tmp/mygit
+
+
+...

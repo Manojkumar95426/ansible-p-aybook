@@ -1,0 +1,20 @@
+---
+- name: create a user and clone a git repo in to users home dir and change permissions
+  hosts: all 
+  gather_facts: false
+  tasks: 
+   - name: Create user
+     user: 
+       name: Anusha
+       password: admin
+       home: /tmp/Anusha
+   - name: clone a github repo
+     git: 
+      repo: https://github.com/Manojkumar95426/new-maven.git
+      dest: /tmp/Anusha/mygit
+   - name: change the permissions
+     file: 
+       name: /tmp/Anusha/mygit
+       mode: 750
+
+...

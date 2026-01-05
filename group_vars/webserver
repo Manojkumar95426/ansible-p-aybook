@@ -1,0 +1,8 @@
+---
+a: firewalld
+b: present
+c: yes
+d: /tmp/file44
+e: touch
+
+...

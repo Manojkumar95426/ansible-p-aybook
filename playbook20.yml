@@ -1,0 +1,28 @@
+---
+- name: Configuring apache2
+  hosts: all
+  tasks: 
+    - name: Install apache2
+      apt: 
+       name: apache2
+       state: present
+       update_cache: yes
+    - name: Edit the content of the file
+      copy: 
+        content: "Welcome Manoj"
+        dest: /var/www/html/index.html
+    - name: Restart the apache2
+      service: 
+        name: apache2
+        state: restarted
+    - name: Check apache2 response on all servers
+      uri: 
+        url: "{{item}}"
+        status_cache: 200
+      loop: 
+        - http://172.31.47.200
+        - http://172.31.44.160
+        - http://172.31.42.210
+        - http://172.31.43.120
+         
+...               

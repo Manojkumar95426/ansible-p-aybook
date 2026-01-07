@@ -1,0 +1,6 @@
+---
+- name: Edit the default index.html
+  copy: 
+    content: "Manoj Kumar"
+    dest: /var/www/html/index.html
+...      

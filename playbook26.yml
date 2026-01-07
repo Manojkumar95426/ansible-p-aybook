@@ -1,0 +1,17 @@
+---
+- name: Delete if the file is executable
+  hosts: all
+  tasks: 
+    - name: Captur file info
+      stat: 
+        path: /tmp/f1
+      register: a
+    - name: Display output of the above file
+      debug: 
+        var: a
+    - name: Delete a file if it is executable
+      file: 
+        name: /tmp/f1
+        state: absent
+      when: a.stat.executable == true
+...          

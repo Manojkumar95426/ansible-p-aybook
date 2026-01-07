@@ -1,0 +1,74 @@
+---
+- name: Configure apache2/httpd on all servers
+  hosts: all
+  become: yes
+
+  tasks:
+    # -------------------------------
+    # Install Apache
+    # -------------------------------
+    - name: Install apache on Ubuntu
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install httpd on RedHat
+      yum:
+        name: httpd
+        state: present
+      when: ansible_distribution == "RedHat"
+
+    # -------------------------------
+    # Ensure web root exists
+    # -------------------------------
+    - name: Ensure /var/www/html exists
+      file:
+        path: /var/www/html
+        state: directory
+        mode: '0755'
+
+    # -------------------------------
+    # Create index.html
+    # -------------------------------
+    - name: Create index.html
+      copy:
+        content: "Maddineni"
+        dest: /var/www/html/index.html
+        mode: '0644'
+
+    # -------------------------------
+    # Start / Restart Apache
+    # -------------------------------
+    - name: Restart apache2 on Ubuntu
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Restart httpd on RedHat
+      service:
+        name: httpd
+        state: restarted
+        enabled: yes
+      when: ansible_distribution == "RedHat"
+
+    # -------------------------------
+    # Wait for Apache to be ready
+    # -------------------------------
+    - name: Wait for port 80
+      wait_for:
+        port: 80
+        delay: 3
+        timeout: 30
+
+    # -------------------------------
+    # Local health check (SAFE)
+    # -------------------------------
+    - name: Check apache locally
+      uri:
+        url: http://localhost
+        status_code: 200
+

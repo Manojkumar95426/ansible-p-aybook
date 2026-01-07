@@ -14,4 +14,8 @@
             name: git
             state: present
             update_cache: yes
+      always: 
+        - name: Print sucess message
+          debug: 
+            msg: "Git Installation Sucessfull"
 ...              
